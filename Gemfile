@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org' do
-    # Gems here
+  gem 'minitest'
+  gem 'rake'
+  gem 'rubocop'
 end
