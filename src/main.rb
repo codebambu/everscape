@@ -6,38 +6,31 @@ require_relative 'oracle'
 require_relative 'player'
 require_relative 'display'
 
+# Main instance of the game.
 class Main
   def initialize
-    # base things
     @display = Display.new
     @oracle = Oracle.new
     @parser = Parser.new
-    @parser.oracle = @oracle
-    # link parser and oracle
-    # todo
     @player = Player.new
+    @parser.oracle = @oracle
     @oracle.player = @player
-    # entities
+
     @entities = [@player]
 
-    # give entities to map
     @map = Map.new(@display.lines, @display.columns)
 
     @entities.each do |entity|
       @map.add_object(entity)
     end
-    # link map and oracle
-    # link oracle and main to communicate about entities
-    # methods for adding and removing entities
-    # todo
   end
 
   def start
-    while true
+    loop do
       @map.objects = @entities
       @map.update_matrix
       @display.draw(@map.matrix)
-      input = @parser.get_input
+      input = @parser.input
       @parser.parse(input)
     end
   end

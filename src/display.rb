@@ -2,6 +2,7 @@
 
 require 'terminfo'
 
+# The display takes care of drawing the map onto the screen.
 class Display
   def initialize
     @lines, @columns = TermInfo.screen_size
@@ -10,28 +11,22 @@ class Display
     system('setterm -cursor off')
   end
 
-  def lines
-    @lines
-  end
+  attr_reader :lines
 
-  def columns
-    @columns
-  end
-  
-  def map=(map)
-    @map = map
-  end
+  attr_reader :columns
+
+  attr_writer :map
 
   def draw(matrix)
     system('clear')
     output = ''
 
-    for line in 1..matrix.size do
+    (1..matrix.size).each do |line|
       current_line = line - 1
-      for column in 1..matrix[current_line].size do
+      (1..matrix[current_line].size).each do |column|
         current_column = column - 1
 
-        output = output + matrix[current_line][current_column].to_s
+        output += matrix[current_line][current_column].to_s
       end
     end
 
