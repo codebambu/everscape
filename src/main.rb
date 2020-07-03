@@ -34,6 +34,7 @@ class Main
 
   def start
     while true
+      @map.objects = @entities
       @map.update_matrix
       @ui.paint(@map.matrix)
       input = @parser.get_input

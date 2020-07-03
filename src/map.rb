@@ -24,6 +24,10 @@ class Map
     @objets
   end
 
+  def objects=(objects)
+    @objects = objects
+  end
+
   def initialize_matrix(lines, columns)
     matrix = []
 

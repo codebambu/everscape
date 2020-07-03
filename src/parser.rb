@@ -5,8 +5,6 @@ require 'io/console'
 class Parser
   def initialize
     @oracle = nil
-    # methods for getting command input string
-    # it consults the Oracle with the input string to determine what to do with the command
   end
 
   def get_input
