@@ -2,6 +2,4 @@
 # frozen_string_literal: true
 
 require_relative '../src/main'
-game = Main.new
-
-p gamE
+Main.new.start
