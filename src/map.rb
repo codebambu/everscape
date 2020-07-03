@@ -34,7 +34,9 @@ class Map
     matrix
   end
 
-  def add_rooms; end
+  def add_room
+    # TODO: implement feature to add a room onto the map.
+  end
 
   def update_matrix
     @matrix = initialize_matrix(@lines, @columns)
