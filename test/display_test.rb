@@ -2,18 +2,18 @@
 
 require 'minitest/autorun'
 require 'terminfo'
-require_relative '../src/ui'
+require_relative '../src/display'
 
-class TestUI < Minitest::Test
+class TestDisplay < Minitest::Test
   def setup
-    @ui = UI.new
+    @display = Display.new
   end
 
-  def test_that_ui_can_get_lines_and_columns
+  def test_that_display_can_get_lines_and_columns
     expected_lines, expected_columns = TermInfo.screen_size
 
-    actual_lines = @ui.lines
-    actual_columns = @ui.columns
+    actual_lines = @display.lines
+    actual_columns = @display.columns
 
     assert_equal(expected_lines, actual_lines)
     assert_equal(expected_columns, actual_columns)

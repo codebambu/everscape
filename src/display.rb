@@ -2,7 +2,7 @@
 
 require 'terminfo'
 
-class UI
+class Display
   def initialize
     @lines, @columns = TermInfo.screen_size
     @map = nil
@@ -22,7 +22,7 @@ class UI
     @map = map
   end
 
-  def paint(matrix)
+  def draw(matrix)
     system('clear')
     output = ''
 

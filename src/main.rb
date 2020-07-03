@@ -4,12 +4,12 @@ require_relative 'map'
 require_relative 'parser'
 require_relative 'oracle'
 require_relative 'player'
-require_relative 'ui'
+require_relative 'display'
 
 class Main
   def initialize
     # base things
-    @ui = UI.new
+    @display = Display.new
     @oracle = Oracle.new
     @parser = Parser.new
     @parser.oracle = @oracle
@@ -21,7 +21,7 @@ class Main
     @entities = [@player]
 
     # give entities to map
-    @map = Map.new(@ui.lines, @ui.columns)
+    @map = Map.new(@display.lines, @display.columns)
 
     @entities.each do |entity|
       @map.add_object(entity)
@@ -36,7 +36,7 @@ class Main
     while true
       @map.objects = @entities
       @map.update_matrix
-      @ui.paint(@map.matrix)
+      @display.draw(@map.matrix)
       input = @parser.get_input
       @parser.parse(input)
     end
