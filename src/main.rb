@@ -28,8 +28,8 @@ class Main
   def start
     loop do
       @map.objects = @entities
-      @map.update_matrix
-      @display.draw(@map.matrix)
+      @map.update_grid
+      @display.draw(@map.grid)
       input = @parser.input
       @parser.parse(input)
     end

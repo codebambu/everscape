@@ -7,14 +7,22 @@ class Player
     @line = 0
     @column = 0
   end
+  
+  def line
+    @line
+  end
 
-  attr_reader :line
+  def line=(line)
+    @line = line
+  end
 
-  attr_reader :column
+  def column
+    @column
+  end
 
-  attr_writer :column
-
-  attr_writer :line
+  def column=(column)
+    @column = column
+  end
 
   def to_s
     @character

@@ -6,7 +6,9 @@ class Oracle
     @player = nil
   end
 
-  attr_writer :player
+  def player=(player)
+    @player = player
+  end
 
   def parse(input)
     case input

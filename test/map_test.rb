@@ -5,14 +5,21 @@ require_relative '../src/map'
 
 class TestMap < Minitest::Test
   def setup
-    @map = Map.new(10, 10)
+    @map_size = 10
+    @map = Map.new(@map_size, @map_size)
   end
 
-  def test_matrix_is_correct_size
-    assert_equal(10, @map.matrix.size)
-    @map.matrix.each do |line|
-      assert_equal(10, line.size)
+  def test_grid_is_correct_size
+    assert_equal(@map_size, @map.grid.size)
+    @map.grid.each do |line|
+      assert_equal(@map_size, line.size)
     end
+  end
+
+  def test_can_create_cells
+    cell_size = 5
+    expected_size = 1
+    assert_equal(expected_size, @map.create_cells(cell_size).size)
   end
 end
 

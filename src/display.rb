@@ -10,12 +10,18 @@ class Display
 
     system('setterm -cursor off')
   end
+  
+  def lines
+    @lines
+  end
 
-  attr_reader :lines
+  def columns
+    @columns
+  end
 
-  attr_reader :columns
-
-  attr_writer :map
+  def map=(map)
+    @map = map
+  end
 
   def draw(matrix)
     system('clear')
