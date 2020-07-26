@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative 'cell'
+require_relative 'room'
+
 # The world contained in a grid.
 class Map
   def initialize(lines, columns)
@@ -7,10 +10,12 @@ class Map
     @columns = columns
     @grid = initialize_grid(@lines, @columns)
     @objects = []
+    @cells = create_cells(11).shuffle.last(7)
+    @rooms = create_rooms
   end
 
-  def line
-    @line
+  def lines
+    @lines
   end
 
   def columns
@@ -42,14 +47,9 @@ class Map
     grid
   end
 
-  def add_room(cell)
-    # cell is array of coordinates [[line, column], ...]
-    # TODO: implement feature to add a room onto the map.
-  end
-
   def create_cells(cell_size)
     cells = []
-
+    
     @grid.each_with_index do |line, line_index|
       # check if the next tile for the line is "on the grid"
       if line_index % cell_size == 0
@@ -58,7 +58,7 @@ class Map
           if column_index % cell_size == 0
             # if cell is within boundry of map, create the cell
             if line_index + cell_size < @lines and column_index + cell_size < @columns
-              cell = create_cell(line_index, column_index, cell_size)
+              cell = Cell.new(line_index, column_index, cell_size)
               cells << cell
             end
           end
@@ -73,32 +73,35 @@ class Map
     @grid[line][column] = tile
   end
 
-  def create_cell(line, column, cell_size)
-    top_left = [line, column]
-    top_right = [line, column + cell_size]
-    bottom_left = [line + cell_size, column]
-    bottom_right = [line + cell_size, column + cell_size]
-    
-    return {
-      'top_left' => top_left,
-      'top_right' => top_right,
-      'bottom_left' => bottom_left,
-      'bottom_right' => bottom_right
-    }
+  def draw_cells
+    @cells.each do |cell|
+      set_tile(cell.line1, cell.column1, '1') # top left corner
+      set_tile(cell.line2, cell.column2, '2') # bottom right corner
+      set_tile(cell.line1, cell.column2, "3") # top right corner
+      set_tile(cell.line2, cell.column1, '4') # bottom left corner
+    end
   end
 
-  def draw_cells(cells)
-    cells.each do |cell|
-      cell.each do |key, value|
-        set_tile(value[0], value[1], 'x')
-      end
+  def create_rooms
+    rooms = []
+
+    @cells.each do |cell|
+      room = Room.new(cell.line1, cell.column1, rand(3..(cell.size - 1)))
     end
+
+    return rooms
+  end
+
+  def draw_rooms
+    # TODO
   end
 
   def update_grid
     @grid = initialize_grid(@lines, @columns)
-    cells = create_cells(10)
-    draw_cells(cells)
+    
+    draw_cells
+    draw_rooms
+       
     @objects.each do |object|
       @grid[object.line][object.column] = object
     end
