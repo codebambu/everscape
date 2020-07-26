@@ -3,7 +3,6 @@
 require_relative 'cell'
 require_relative 'room'
 
-# The world contained in a grid.
 class Map
   def initialize(lines, columns)
     @lines = lines
@@ -77,7 +76,7 @@ class Map
     @cells.each do |cell|
       set_tile(cell.line1, cell.column1, '1') # top left corner
       set_tile(cell.line2, cell.column2, '2') # bottom right corner
-      set_tile(cell.line1, cell.column2, "3") # top right corner
+      set_tile(cell.line1, cell.column2, '3') # top right corner
       set_tile(cell.line2, cell.column1, '4') # bottom left corner
     end
   end
@@ -87,19 +86,24 @@ class Map
 
     @cells.each do |cell|
       room = Room.new(cell.line1, cell.column1, rand(3..(cell.size - 1)))
+      rooms << room
     end
 
     return rooms
   end
 
   def draw_rooms
-    # TODO
+    @rooms.each do |room|
+      room.walls.each do |wall|
+        set_tile(wall.line, wall.column, wall)
+      end
+    end
   end
 
   def update_grid
     @grid = initialize_grid(@lines, @columns)
     
-    draw_cells
+    # draw_cells
     draw_rooms
        
     @objects.each do |object|
