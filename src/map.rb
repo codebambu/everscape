@@ -24,8 +24,10 @@ class Map
   def objects
     @objets
   end
-
-  attr_writer :objects
+  
+  def objects=(objects)
+    @objects = objects
+  end
 
   def initialize_grid(lines, columns)
     grid = []
@@ -95,7 +97,7 @@ class Map
 
   def update_grid
     @grid = initialize_grid(@lines, @columns)
-    cells = create_cells(5)
+    cells = create_cells(10)
     draw_cells(cells)
     @objects.each do |object|
       @grid[object.line][object.column] = object

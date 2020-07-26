@@ -22,7 +22,6 @@ class Parser
   def oracle=(oracle)
     @oracle = oracle
   end
-  attr_writer :oracle
 
   def parse(input)
     @oracle.parse(input)
