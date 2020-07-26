@@ -7,7 +7,7 @@ class Player
     @line = 0
     @column = 0
   end
-  
+
   def line
     @line
   end

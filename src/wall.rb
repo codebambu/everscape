@@ -4,15 +4,15 @@ class Wall
     @column = column
     @character = '#'
   end
-  
+
   def line
     @line
   end
-  
+
   def column
     @column
-  end 
- 
+  end
+
   def to_s
     @character
   end

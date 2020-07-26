@@ -4,9 +4,9 @@ class Cell
     @line1 = line
     @line2 = line + @size
     @column1 = column
-    @column2 = column + @size  
+    @column2 = column + @size
   end
-  
+
   def line1
     @line1
   end

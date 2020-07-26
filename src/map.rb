@@ -28,7 +28,7 @@ class Map
   def objects
     @objets
   end
-  
+
   def objects=(objects)
     @objects = objects
   end
@@ -48,7 +48,7 @@ class Map
 
   def create_cells(cell_size)
     cells = []
-    
+
     @grid.each_with_index do |line, line_index|
       # check if the next tile for the line is "on the grid"
       if line_index % cell_size == 0
@@ -102,10 +102,10 @@ class Map
 
   def update_grid
     @grid = initialize_grid(@lines, @columns)
-    
+
     # draw_cells
     draw_rooms
-       
+
     @objects.each do |object|
       @grid[object.line][object.column] = object
     end

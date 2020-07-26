@@ -10,7 +10,7 @@ class Display
 
     system('setterm -cursor off')
   end
-  
+
   def lines
     @lines
   end

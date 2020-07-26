@@ -18,7 +18,7 @@ class Parser
 
     command
   end
-  
+
   def oracle=(oracle)
     @oracle = oracle
   end

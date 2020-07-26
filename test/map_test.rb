@@ -22,4 +22,3 @@ class TestMap < Minitest::Test
     assert_equal(expected_size, @map.create_cells(cell_size).size)
   end
 end
-
