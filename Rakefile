@@ -7,7 +7,7 @@ Rake::TestTask.new do |t|
 end
 
 task :start do
-  ruby 'bin/oniron'
+  ruby 'bin/everscape'
 end
 
 task default: :test
