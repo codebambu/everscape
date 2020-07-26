@@ -16,7 +16,7 @@ class TestMap < Minitest::Test
     end
   end
 
-  def test_can_create_cells
+  def test_map_creates_correct_amount_of_cells
     cell_size = 5
     expected_size = 1
     assert_equal(expected_size, @map.create_cells(cell_size).size)
