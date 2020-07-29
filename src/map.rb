@@ -92,7 +92,7 @@ class Map
       room_lines = rand(3..(cell_lines - 1))
       room_columns = rand(3..(cell_columns - 1))
       room_size = [room_lines, room_columns]
-      
+
       room = Room.new(cell.line1, cell.column1, room_size)
       rooms << room
     end

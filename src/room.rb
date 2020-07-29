@@ -14,12 +14,12 @@ class Room
 
     walls = []
 
-    # west walls 
+    # west walls
     for i in 1..lines
       wall = Wall.new(line + i, column)
       walls << wall
     end
-    
+
     # east walls
     for i in 1..lines
       wall = Wall.new(line + i, column + columns)
@@ -31,7 +31,7 @@ class Room
       wall = Wall.new(line, column + i)
       walls << wall
     end
-    
+
     # south walls
     for i in 1..columns
       wall = Wall.new(line + lines, column + i)
