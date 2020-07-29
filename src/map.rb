@@ -4,12 +4,12 @@ require_relative 'cell'
 require_relative 'room'
 
 class Map
-  def initialize(lines, columns)
+  def initialize(lines, columns, cell_size, room_count)
     @lines = lines
     @columns = columns
     @grid = initialize_grid(@lines, @columns)
     @objects = []
-    @cells = create_cells(11).shuffle.last(7)
+    @cells = create_cells(cell_size).shuffle.last(room_count)
     @rooms = create_rooms
   end
 
@@ -46,18 +46,20 @@ class Map
     grid
   end
 
-  def create_cells(cell_size)
+  def create_cells(size)
+    lines, columns = size
+
     cells = []
 
     @grid.each_with_index do |line, line_index|
       # check if the next tile for the line is "on the grid"
-      if line_index % cell_size == 0
+      if line_index % lines == 0
         line.each_with_index do |column, column_index|
           # check if the next tile for the columns is "on the grid"
-          if column_index % cell_size == 0
+          if column_index % columns == 0
             # if cell is within boundry of map, create the cell
-            if line_index + cell_size < @lines and column_index + cell_size < @columns
-              cell = Cell.new(line_index, column_index, cell_size)
+            if line_index + lines < @lines and column_index + columns < @columns
+              cell = Cell.new(line_index, column_index, size)
               cells << cell
             end
           end
@@ -85,7 +87,13 @@ class Map
     rooms = []
 
     @cells.each do |cell|
-      room = Room.new(cell.line1, cell.column1, rand(3..(cell.size - 1)))
+      cell_lines, cell_columns = cell.size
+
+      room_lines = rand(3..(cell_lines - 1))
+      room_columns = rand(3..(cell_columns - 1))
+      room_size = [room_lines, room_columns]
+      
+      room = Room.new(cell.line1, cell.column1, room_size)
       rooms << room
     end
 
@@ -103,7 +111,7 @@ class Map
   def update_grid
     @grid = initialize_grid(@lines, @columns)
 
-    # draw_cells
+    draw_cells
     draw_rooms
 
     @objects.each do |object|

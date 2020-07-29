@@ -1,10 +1,11 @@
 class Cell
   def initialize(line, column, size)
     @size = size
+    (@lines, @columns) = size
     @line1 = line
-    @line2 = line + @size
+    @line2 = line + @lines
     @column1 = column
-    @column2 = column + @size
+    @column2 = column + @columns
   end
 
   def line1

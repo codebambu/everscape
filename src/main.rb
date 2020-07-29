@@ -18,7 +18,7 @@ class Main
 
     @entities = [@player]
 
-    @map = Map.new(@display.lines, @display.columns)
+    @map = Map.new(@display.lines, @display.columns, [7, 14], 14)
 
     @entities.each do |entity|
       @map.add_object(entity)
