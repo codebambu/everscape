@@ -4,13 +4,12 @@ require_relative 'cell'
 require_relative 'room'
 
 class Map
-  def initialize(lines, columns, cell_size, room_count)
+  def initialize(lines, columns, size, room_count)
     @lines = lines
     @columns = columns
-    @grid = initialize_grid(@lines, @columns)
+    @size = size
+    @room_count = room_count
     @objects = []
-    @cells = create_cells(cell_size).shuffle.last(room_count)
-    @rooms = create_rooms
   end
 
   def lines
@@ -33,20 +32,25 @@ class Map
     @objects = objects
   end
 
-  def initialize_grid(lines, columns)
+  def initialize_grid
     grid = []
 
-    (1..lines).each do |i|
+    (1..@lines).each do |i|
       grid << []
-      (1..columns).each do |_j|
+      (1..@columns).each do |_j|
         grid[i - 1] << '.'
       end
     end
 
-    grid
+    @grid = grid
+  end
+  
+  def add_object(object)
+    @objects << object
+    update_grid
   end
 
-  def create_cells(size)
+  def create_cells(size, room_count)
     lines, columns = size
 
     cells = []
@@ -58,7 +62,7 @@ class Map
           # check if the next tile for the columns is "on the grid"
           if column_index % columns == 0
             # if cell is within boundry of map, create the cell
-            if line_index + lines < @lines and column_index + columns < @columns
+            if line_index + lines < @lines && column_index + columns < @columns
               cell = Cell.new(line_index, column_index, size)
               cells << cell
             end
@@ -67,7 +71,9 @@ class Map
       end
     end
 
-    return cells
+    cells = cells.shuffle.last(room_count)
+
+    @cells = cells
   end
 
   def set_tile(line, column, tile)
@@ -97,7 +103,9 @@ class Map
       rooms << room
     end
 
-    return rooms
+    @rooms = rooms
+
+    draw_rooms
   end
 
   def draw_rooms
@@ -108,19 +116,130 @@ class Map
     end
   end
 
-  def update_grid
-    @grid = initialize_grid(@lines, @columns)
+  def get_east_path(wall)
+    path = []
+    path_valid = false
 
+    (wall.column..@columns - 2).each do |column|
+      current_line = wall.line
+      current_column = column + 1
+
+      path << [current_line, current_column - 1]
+
+      current_grid_position = @grid[current_line][current_column]
+      next_grid_position = @grid[current_line][current_column + 1]
+
+      if current_grid_position.class == Wall && next_grid_position.class == String
+        path_valid = true
+        path << [current_line, current_column]
+
+        break
+      end
+    end
+
+    if path_valid
+      return path
+    else
+      return nil
+    end
+  end
+
+  def get_south_path(wall)
+    path = []
+    path_valid = false
+
+    (wall.line..@lines - 3).each do |line|
+      current_line = line + 1
+      current_column = wall.column
+
+      path << [current_line - 1, current_column]
+
+      current_grid_position = @grid[current_line][current_column]
+      next_grid_position = @grid[current_line + 1][current_column]
+
+      if current_grid_position.class == Wall && next_grid_position.class == String
+        path_valid = true
+        path << [current_line, current_column]
+
+        break
+      end
+    end
+
+    if path_valid
+      return path
+    else
+      return nil
+    end
+  end
+
+  def create_horizontal_corridors_paths
+    paths = []
+
+    @rooms.each do |room|
+      east_walls = room.east_walls
+
+      # east walls
+      east_walls.each do |wall|
+        path = get_east_path(wall)
+
+        if path
+          path.each do |position|
+            paths << position
+          end
+
+          break
+        end
+      end
+    end
+
+    @horizontal_corridors_paths = paths
+  end
+
+  def create_vertical_corridors_paths
+    paths = []
+
+    @rooms.each do |room|
+      south_walls = room.south_walls
+
+      # south walls
+      south_walls.each do |wall|
+        path = get_south_path(wall)
+
+        if path
+          path.each do |position|
+            paths << position
+          end
+
+          break
+        end
+      end
+    end
+
+    @vertical_corridors_paths = paths
+  end
+
+  def create_corridors_paths
+    create_horizontal_corridors_paths
+    create_vertical_corridors_paths
+    @corridors_paths = @horizontal_corridors_paths + @vertical_corridors_paths
+  end
+
+  def draw_corridors_paths
+    @corridors_paths.each do |position|
+      set_tile(position[0], position[1], 'x')
+    end
+  end
+ 
+  def update_grid
+    @grid = initialize_grid
+
+    # all draw methods here
     draw_cells
     draw_rooms
+    draw_corridors_paths
 
     @objects.each do |object|
       @grid[object.line][object.column] = object
     end
-  end
-
-  def add_object(object)
-    @objects << object
-    update_grid
   end
 end
