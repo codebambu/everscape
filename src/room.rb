@@ -55,8 +55,8 @@ class Room
     end
 
     # north walls
-    for i in 1..columns
-      wall = Wall.new(line, column + i)
+    for i in 1..columns + 1
+      wall = Wall.new(line, (column + i) - 1)
       # walls << wall
       north_walls << wall
     end

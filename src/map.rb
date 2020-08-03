@@ -44,7 +44,7 @@ class Map
 
     @grid = grid
   end
-  
+
   def add_object(object)
     @objects << object
     update_grid
@@ -134,6 +134,8 @@ class Map
         path << [current_line, current_column]
 
         break
+      elsif current_grid_position.class == Wall
+        break
       end
     end
 
@@ -162,6 +164,8 @@ class Map
         path << [current_line, current_column]
 
         break
+      elsif current_grid_position.class == Wall
+        break
       end
     end
 
@@ -173,49 +177,60 @@ class Map
   end
 
   def create_horizontal_corridors_paths
-    paths = []
+    all_paths = []
 
     @rooms.each do |room|
       east_walls = room.east_walls
+      east_walls.pop
+      room_paths = []
+      # east_walls = east_walls.take(east_walls.length - 1)
 
-      # east walls
       east_walls.each do |wall|
         path = get_east_path(wall)
 
         if path
-          path.each do |position|
-            paths << position
-          end
+          room_paths << path
 
-          break
+          # break
         end
+      end
+
+      room_paths.shuffle!
+
+      if room_paths.length > 0
+        all_paths << room_paths.first
       end
     end
 
-    @horizontal_corridors_paths = paths
+    @horizontal_corridors_paths = all_paths
   end
 
   def create_vertical_corridors_paths
-    paths = []
+    all_paths = []
 
     @rooms.each do |room|
       south_walls = room.south_walls
+      south_walls.pop
+      room_paths = []
 
-      # south walls
       south_walls.each do |wall|
         path = get_south_path(wall)
 
         if path
-          path.each do |position|
-            paths << position
-          end
+          room_paths << path
 
-          break
+          # break
         end
+      end
+
+      room_paths.shuffle!
+
+      if room_paths.length > 0
+        all_paths << room_paths.first
       end
     end
 
-    @vertical_corridors_paths = paths
+    @vertical_corridors_paths = all_paths
   end
 
   def create_corridors_paths
@@ -224,17 +239,20 @@ class Map
     @corridors_paths = @horizontal_corridors_paths + @vertical_corridors_paths
   end
 
+  # debugging method
   def draw_corridors_paths
-    @corridors_paths.each do |position|
-      set_tile(position[0], position[1], 'x')
+    @corridors_paths.each do |path|
+      path.each do |position|
+        set_tile(position[0], position[1], 'x')
+      end
     end
   end
- 
+
   def update_grid
     @grid = initialize_grid
 
     # all draw methods here
-    draw_cells
+    # draw_cells
     draw_rooms
     draw_corridors_paths
 

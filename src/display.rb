@@ -24,7 +24,7 @@ class Display
   end
 
   def draw(matrix)
-    system('clear')
+    # system('clear')
     output = ''
 
     (1..matrix.size).each do |line|
