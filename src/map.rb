@@ -11,6 +11,9 @@ class Map
     @size = size
     @room_count = room_count
     @objects = []
+    @horizontal_corridors_paths = []
+    @vertical_corridors_paths = []
+    @corridors_paths = @horizontal_corridors_paths + @vertical_corridors_paths
   end
 
   def lines
@@ -47,17 +50,17 @@ class Map
   end
 
   def draw_floor
-     (1..@lines).each do |i|
+    (1..@lines).each do |i|
       grid << []
       (1..@columns).each do |j|
         line = i - 1
         column = j - 1
-        
+
         set_tile(line, column, Floor.new(line, column))
       end
     end
   end
-  
+
   def add_object(object)
     @objects << object
     update_grid
@@ -147,7 +150,7 @@ class Map
         path << [current_line, current_column]
 
         break
-      elsif current_grid_position.class == Wall
+      elsif current_grid_position.class == Wall || in_vertical_corridors_paths(current_line, current_column)
         break
       end
     end
@@ -177,7 +180,7 @@ class Map
         path << [current_line, current_column]
 
         break
-      elsif current_grid_position.class == Wall
+      elsif current_grid_position.class == Wall || in_horizontal_corridors_paths(current_line, current_column)
         break
       end
     end
@@ -187,6 +190,30 @@ class Map
     else
       return nil
     end
+  end
+
+  def in_horizontal_corridors_paths(line, column)
+    @horizontal_corridors_paths.each do |path|
+      path.each do |position|
+        if position[0] == line && position[1] == column
+          return true
+        end
+      end
+    end
+
+    return false
+  end
+
+  def in_vertical_corridors_paths(line, column)
+    @vertical_corridors_paths.each do |path|
+      path.each do |position|
+        if position[0] == line && position[1] == column
+          return true
+        end
+      end
+    end
+
+    return false
   end
 
   def create_horizontal_corridors_paths
@@ -257,6 +284,7 @@ class Map
     @corridors_paths.each do |path|
       path.each do |position|
         set_tile(position[0], position[1], 'x')
+        # set_tile(position[0], position[1], Floor.new(position[0], position[1]))
       end
     end
   end
