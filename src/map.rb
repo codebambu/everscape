@@ -2,6 +2,7 @@
 
 require_relative 'cell'
 require_relative 'room'
+require_relative 'floor'
 
 class Map
   def initialize(lines, columns, size, room_count)
@@ -38,13 +39,25 @@ class Map
     (1..@lines).each do |i|
       grid << []
       (1..@columns).each do |_j|
-        grid[i - 1] << '.'
+        grid[i - 1] << ' '
       end
     end
 
     @grid = grid
   end
 
+  def draw_floor
+     (1..@lines).each do |i|
+      grid << []
+      (1..@columns).each do |j|
+        line = i - 1
+        column = j - 1
+        
+        set_tile(line, column, Floor.new(line, column))
+      end
+    end
+  end
+  
   def add_object(object)
     @objects << object
     update_grid
@@ -253,6 +266,7 @@ class Map
 
     # all draw methods here
     # draw_cells
+    draw_floor
     draw_rooms
     draw_corridors_paths
 
