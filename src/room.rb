@@ -33,8 +33,6 @@ class Room
   def create_walls(line, column, size)
     lines, columns = size
 
-    # walls = []
-
     north_walls = []
     south_walls = []
     east_walls = []

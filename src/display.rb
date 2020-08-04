@@ -9,6 +9,7 @@ class Display
     @map = nil
 
     system('setterm -cursor off')
+    system('stty -echo')
   end
 
   def lines
@@ -24,7 +25,6 @@ class Display
   end
 
   def draw(matrix)
-    # system('clear')
     output = ''
 
     (1..matrix.size).each do |line|

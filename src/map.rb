@@ -3,6 +3,7 @@
 require_relative 'cell'
 require_relative 'room'
 require_relative 'floor'
+require_relative 'corridor'
 
 class Map
   def initialize(lines, columns, size, room_count)
@@ -10,10 +11,19 @@ class Map
     @columns = columns
     @size = size
     @room_count = room_count
+    @grid = []
     @objects = []
     @horizontal_corridors_paths = []
     @vertical_corridors_paths = []
-    @corridors_paths = @horizontal_corridors_paths + @vertical_corridors_paths
+    @corridors_paths = []
+    @floor = []
+
+    initialize_grid
+    create_cells
+    create_rooms
+    create_corridors_paths
+    create_corridors
+    create_floor
   end
 
   def lines
@@ -49,25 +59,13 @@ class Map
     @grid = grid
   end
 
-  def draw_floor
-    (1..@lines).each do |i|
-      grid << []
-      (1..@columns).each do |j|
-        line = i - 1
-        column = j - 1
-
-        set_tile(line, column, Floor.new(line, column))
-      end
-    end
-  end
-
   def add_object(object)
     @objects << object
     update_grid
   end
 
-  def create_cells(size, room_count)
-    lines, columns = size
+  def create_cells
+    lines, columns = @size
 
     cells = []
 
@@ -79,7 +77,7 @@ class Map
           if column_index % columns == 0
             # if cell is within boundry of map, create the cell
             if line_index + lines < @lines && column_index + columns < @columns
-              cell = Cell.new(line_index, column_index, size)
+              cell = Cell.new(line_index, column_index, @size)
               cells << cell
             end
           end
@@ -87,7 +85,7 @@ class Map
       end
     end
 
-    cells = cells.shuffle.last(room_count)
+    cells = cells.shuffle.last(@room_count)
 
     @cells = cells
   end
@@ -223,15 +221,12 @@ class Map
       east_walls = room.east_walls
       east_walls.pop
       room_paths = []
-      # east_walls = east_walls.take(east_walls.length - 1)
 
       east_walls.each do |wall|
         path = get_east_path(wall)
 
         if path
           room_paths << path
-
-          # break
         end
       end
 
@@ -258,8 +253,6 @@ class Map
 
         if path
           room_paths << path
-
-          # break
         end
       end
 
@@ -279,13 +272,81 @@ class Map
     @corridors_paths = @horizontal_corridors_paths + @vertical_corridors_paths
   end
 
-  # debugging method
   def draw_corridors_paths
     @corridors_paths.each do |path|
       path.each do |position|
-        set_tile(position[0], position[1], 'x')
-        # set_tile(position[0], position[1], Floor.new(position[0], position[1]))
+        set_tile(position[0], position[1], Floor.new(position[0], position[1]))
       end
+    end
+  end
+
+  def create_horizontal_corridors
+    horizontal_corridors = []
+
+    @horizontal_corridors_paths.each do |path|
+      corridor = Corridor.new('horizontal', path)
+
+      horizontal_corridors << corridor
+    end
+
+    @horizontal_corridors = horizontal_corridors
+  end
+
+  def create_vertical_corridors
+    vertical_corridors = []
+
+    @vertical_corridors_paths.each do |path|
+      corridor = Corridor.new('vertical', path)
+
+      vertical_corridors << corridor
+    end
+
+    @vertical_corridors = vertical_corridors
+  end
+
+  def create_corridors
+    create_horizontal_corridors
+    create_vertical_corridors
+  end
+
+  def draw_corridors
+    @horizontal_corridors.each do |corridor|
+      corridor.walls.each do |wall|
+        set_tile(wall.line, wall.column, wall)
+      end
+    end
+
+    @vertical_corridors.each do |corridor|
+      corridor.walls.each do |wall|
+        set_tile(wall.line, wall.column, wall)
+      end
+    end
+  end
+
+  def create_floor
+    floors = []
+
+    @rooms.each do |room|
+      first_north_wall = room.north_walls.first
+      last_north_wall = room.north_walls.last
+
+      first_south_wall = room.south_walls.first
+
+      (first_north_wall.line..first_south_wall.line).each do |line|
+        (first_north_wall.column..last_north_wall.column).each do |column|
+          floor = Floor.new(line, column)
+
+          floors << floor
+        end
+      end
+    end
+
+    @floor = floors
+  end
+
+  def draw_floor
+    @floor.each do |floor|
+      set_tile(floor.line, floor.column, floor)
     end
   end
 
@@ -293,13 +354,13 @@ class Map
     @grid = initialize_grid
 
     # all draw methods here
-    # draw_cells
     draw_floor
     draw_rooms
     draw_corridors_paths
+    draw_corridors
 
     @objects.each do |object|
-      @grid[object.line][object.column] = object
+      set_tile(object.line, object.column, object)
     end
   end
 end

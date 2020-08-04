@@ -22,19 +22,11 @@ class Main
     room_count = 14
 
     @map = Map.new(@display.lines, @display.columns, size, room_count)
-    @map.initialize_grid
-    @map.create_cells(size, room_count)
-    @map.create_rooms
-    @map.create_corridors_paths
-
-    @entities.each do |entity|
-      @map.add_object(entity)
-    end
+    @map.add_object(@player)
   end
 
   def start
     loop do
-      @map.objects = @entities
       @map.update_grid
       @display.draw(@map.grid)
       input = @parser.input

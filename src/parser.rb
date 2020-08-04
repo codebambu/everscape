@@ -13,6 +13,7 @@ class Parser
 
     if command == "\u0003" # CTRL-C to exit
       system('setterm -cursor on')
+      system('stty echo')
       exit
     end
 
