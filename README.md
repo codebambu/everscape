@@ -2,9 +2,6 @@
 
 A casual coffee break roguelike
 
-## Screenshot
-<img src="data/screenshots/Screenshot from 2020-08-04 01-40-19.png" alt="Screenshot">
-
 ## Features
 * Terminal based
 * Screen size maps
