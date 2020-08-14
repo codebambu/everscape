@@ -1,6 +1,8 @@
 require_relative 'wall'
 
 class Corridor
+  attr_accessor :walls
+
   def initialize(orientation, path)
     @orientation = orientation
     @path = path
@@ -11,10 +13,6 @@ class Corridor
     elsif orientation == 'vertical'
       create_vertical_walls
     end
-  end
-
-  def walls
-    @walls
   end
 
   def create_horizontal_walls

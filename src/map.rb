@@ -6,10 +6,10 @@ require_relative 'floor'
 require_relative 'corridor'
 
 class Map
-  def initialize(lines, columns, size, room_count)
+  def initialize(lines, columns, cell_size, room_count)
     @lines = lines
     @columns = columns
-    @size = size
+    @cell_size = cell_size
     @room_count = room_count
     @grid = []
     @objects = []
@@ -18,12 +18,7 @@ class Map
     @corridors_paths = []
     @floor = []
 
-    initialize_grid
-    create_cells
-    create_rooms
-    create_corridors_paths
-    create_corridors
-    create_floor
+    create_dungeon
   end
 
   def lines
@@ -46,6 +41,36 @@ class Map
     @objects = objects
   end
 
+  def create_dungeon
+    initialize_grid
+    create_cells
+    create_rooms
+    create_corridors_paths
+    create_corridors
+    clear_corridors_paths
+    create_floor
+  end
+
+  def clear_corridors_paths
+    @vertical_corridors.each do |vertical_corridor|
+      vertical_corridor.walls.each_with_index do |wall, index|
+        if in_horizontal_corridors_paths(wall.line, wall.column)
+          vertical_corridor.walls.delete_at(index)
+          vertical_corridor.walls.delete_at(index)
+        end
+      end
+    end
+
+    @horizontal_corridors.each do |horizontal_corridor|
+      horizontal_corridor.walls.each_with_index do |wall, index|
+        if in_vertical_corridors_paths(wall.line, wall.column)
+          horizontal_corridor.walls.delete_at(index)
+          horizontal_corridor.walls.delete_at(index)
+        end
+      end
+    end
+  end
+
   def initialize_grid
     grid = []
 
@@ -65,7 +90,7 @@ class Map
   end
 
   def create_cells
-    lines, columns = @size
+    lines, columns = @cell_size
 
     cells = []
 
@@ -77,7 +102,7 @@ class Map
           if column_index % columns == 0
             # if cell is within boundry of map, create the cell
             if line_index + lines < @lines && column_index + columns < @columns
-              cell = Cell.new(line_index, column_index, @size)
+              cell = Cell.new(line_index, column_index, @cell_size)
               cells << cell
             end
           end
@@ -98,7 +123,7 @@ class Map
     @cells.each do |cell|
       set_tile(cell.line1, cell.column1, '1') # top left corner
       set_tile(cell.line2, cell.column2, '2') # bottom right corner
-      set_tile(cell.line1, cell.column2, '3') # top right corner
+      set_tile(cell.line1, cell.column2, '3') # top righ`:qwt corner
       set_tile(cell.line2, cell.column1, '4') # bottom left corner
     end
   end
@@ -148,7 +173,7 @@ class Map
         path << [current_line, current_column]
 
         break
-      elsif current_grid_position.class == Wall || in_vertical_corridors_paths(current_line, current_column)
+      elsif current_grid_position.class == Wall
         break
       end
     end
@@ -178,7 +203,7 @@ class Map
         path << [current_line, current_column]
 
         break
-      elsif current_grid_position.class == Wall || in_horizontal_corridors_paths(current_line, current_column)
+      elsif current_grid_position.class == Wall
         break
       end
     end

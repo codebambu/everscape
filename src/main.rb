@@ -18,10 +18,10 @@ class Main
 
     @entities = [@player]
 
-    size = [7, 14]
+    cell_size = [7, 14]
     room_count = 14
 
-    @map = Map.new(@display.lines, @display.columns, size, room_count)
+    @map = Map.new(@display.lines, @display.columns, cell_size, room_count)
     @map.add_object(@player)
   end
 
