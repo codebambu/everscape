@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require_relative '../src/map'
+require_relative '../lib/everscape/map'
 
 class TestMap < Minitest::Test
   def setup
     @map_size = 10
-    @map = Map.new(@map_size, @map_size)
+    cell_size = [5, 5]
+    room_count = 14
+    @map = Map.new(@map_size, @map_size, cell_size, room_count)
   end
 
   def test_grid_is_correct_size
@@ -17,8 +19,7 @@ class TestMap < Minitest::Test
   end
 
   def test_map_creates_correct_amount_of_cells
-    cell_size = 5
     expected_size = 1
-    assert_equal(expected_size, @map.create_cells(cell_size).size)
+    assert_equal(expected_size, @map.create_cells.size)
   end
 end

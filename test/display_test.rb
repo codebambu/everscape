@@ -2,7 +2,7 @@
 
 require 'minitest/autorun'
 require 'terminfo'
-require_relative '../src/display'
+require_relative '../lib/everscape/display'
 
 class TestDisplay < Minitest::Test
   def setup
