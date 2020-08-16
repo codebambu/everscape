@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative '../src/main'
-Main.new.start
+require_relative '../lib/everscape'
+Everscape.new.start
+

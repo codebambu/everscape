@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require_relative 'map'
-require_relative 'parser'
-require_relative 'oracle'
-require_relative 'player'
-require_relative 'display'
+require_relative 'everscape/map'
+require_relative 'everscape/parser'
+require_relative 'everscape/oracle'
+require_relative 'everscape/player'
+require_relative 'everscape/display'
 
-# Main instance of the game.
-class Main
+# main instance of the game.
+class Everscape
   def initialize
     @display = Display.new
     @oracle = Oracle.new
