@@ -1,27 +1,10 @@
-# frozen_string_literal: true
-
-# The playable character on the screen.
 class Player
+  attr_accessor :line, :column
+
   def initialize
     @character = '@'
     @line = 0
     @column = 0
-  end
-
-  def line
-    @line
-  end
-
-  def line=(line)
-    @line = line
-  end
-
-  def column
-    @column
-  end
-
-  def column=(column)
-    @column = column
   end
 
   def to_s
@@ -40,6 +23,8 @@ class Player
       move_right
     end
   end
+
+  # commands
 
   def move_left
     @column -= 1

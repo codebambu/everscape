@@ -1,11 +1,12 @@
-# frozen_string_literal: true
-
 require_relative 'cell'
 require_relative 'room'
 require_relative 'floor'
 require_relative 'corridor'
 
 class Map
+  attr_reader :lines, :columns, :grid
+  attr_accessor :objects
+
   def initialize(lines, columns, cell_size, room_count)
     @lines = lines
     @columns = columns
@@ -19,26 +20,6 @@ class Map
     @floor = []
 
     create_dungeon
-  end
-
-  def lines
-    @lines
-  end
-
-  def columns
-    @columns
-  end
-
-  def grid
-    @grid
-  end
-
-  def objects
-    @objets
-  end
-
-  def objects=(objects)
-    @objects = objects
   end
 
   def create_dungeon
