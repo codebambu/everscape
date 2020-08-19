@@ -25,7 +25,7 @@ class Everscape
       @display.draw(@map.grid)
 
       command = STDIN.getch
-      
+
       @parser.parse(command)
     end
   end

@@ -30,14 +30,14 @@ class Player
 
   def parse_command(command)
     case command
-      when 'w'
-        move_up
-      when 'a'
-        move_left
-      when 's'
-        move_down
-      when 'd'
-        move_right
+    when 'w'
+      move_up
+    when 'a'
+      move_left
+    when 's'
+      move_down
+    when 'd'
+      move_right
     end
   end
 

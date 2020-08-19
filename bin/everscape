@@ -3,4 +3,3 @@
 
 require_relative '../lib/everscape'
 Everscape.new.start
-
