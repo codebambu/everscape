@@ -1,8 +1,8 @@
 require 'io/console'
-require_relative 'everscape/map'
 require_relative 'everscape/parser'
 require_relative 'everscape/player'
 require_relative 'everscape/display'
+require_relative 'everscape/dungeon'
 
 class Everscape
   def initialize
@@ -15,14 +15,14 @@ class Everscape
     cell_size = [7, 14]
     room_count = 14
 
-    @map = Map.new(@display.lines, @display.columns, cell_size, room_count)
-    @map.add_object(@player)
+    @dungeon = Dungeon.new(@display.lines, @display.columns, cell_size, room_count)
+    @dungeon.add_object(@player)
   end
 
   def start
     loop do
-      @map.update_grid
-      @display.draw(@map.grid)
+      @dungeon.update_grid
+      @display.draw(@dungeon.grid)
 
       command = STDIN.getch
 

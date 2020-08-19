@@ -8,7 +8,7 @@ class TestMap < Minitest::Test
     @map_size = 10
     cell_size = [5, 5]
     room_count = 14
-    @map = Map.new(@map_size, @map_size, cell_size, room_count)
+    @map = Map.new(@map_size, @map_size)
   end
 
   def test_grid_is_correct_size
@@ -18,8 +18,4 @@ class TestMap < Minitest::Test
     end
   end
 
-  def test_map_creates_correct_amount_of_cells
-    expected_size = 1
-    assert_equal(expected_size, @map.create_cells.size)
-  end
 end
