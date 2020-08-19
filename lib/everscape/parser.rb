@@ -2,29 +2,17 @@
 
 require 'io/console'
 
-# Takes and parses user input,then sends it off to the Oracle.
+# Takes and parses user input,then sends it off to the player
 class Parser
-  def initialize
-    @oracle = nil
-  end
+  attr_writer :player
 
-  def input
-    command = STDIN.getch
-
+  def parse(command)
     if command == "\u0003" # CTRL-C to exit
       system('setterm -cursor on')
       system('stty echo')
       exit
     end
 
-    command
-  end
-
-  def oracle=(oracle)
-    @oracle = oracle
-  end
-
-  def parse(input)
-    @oracle.parse(input)
+    @player.parse_command(command)
   end
 end

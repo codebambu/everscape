@@ -28,6 +28,19 @@ class Player
     @character
   end
 
+  def parse_command(command)
+    case command
+      when 'w'
+        move_up
+      when 'a'
+        move_left
+      when 's'
+        move_down
+      when 'd'
+        move_right
+    end
+  end
+
   def move_left
     @column -= 1
   end
