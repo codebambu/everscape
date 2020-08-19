@@ -17,5 +17,4 @@ class TestMap < Minitest::Test
       assert_equal(@map_size, line.size)
     end
   end
-
 end

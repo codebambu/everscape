@@ -12,10 +12,10 @@ class Map
     @columns = columns
     @grid = []
     @objects = []
-    
+
     initialize_grid
   end
-  
+
   def initialize_grid
     grid = []
 

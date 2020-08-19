@@ -10,7 +10,7 @@ class Dungeon < Map
     @corridors_paths = []
     @floor = []
 
-    create_dungeon    
+    create_dungeon
   end
 
   def create_dungeon
@@ -32,7 +32,7 @@ class Dungeon < Map
         @objects << wall
       end
     end
-    
+
     @vertical_corridors.each do |corridor|
       corridor.walls.each do |wall|
         @objects << wall
@@ -335,7 +335,6 @@ class Dungeon < Map
         floors << floor
       end
     end
-
 
     @floor = floors
   end
