@@ -1,10 +1,10 @@
 class Player
   attr_accessor :line, :column
-
+  attr_writer :map
   def initialize
     @character = '@'
-    @line = 0
-    @column = 0
+    @line = 1
+    @column = 1
   end
 
   def to_s
@@ -27,18 +27,26 @@ class Player
   # commands
 
   def move_left
-    @column -= 1
+    collides = handle_collision(@line, @column -1)
+    @column -= 1 unless collides
   end
 
   def move_right
-    @column += 1
+    collides = handle_collision(@line, @column + 1)
+    @column += 1 unless collides
   end
 
   def move_up
-    @line = line - 1
+    collides = handle_collision(@line - 1, @column)
+    @line -=1 unless collides
   end
 
   def move_down
-    @line = line + 1
+    collides = handle_collision(@line + 1, @column)
+    @line += 1 unless collides
+  end
+
+  def handle_collision(line, column)
+    return @map.grid[line][column].class == Wall
   end
 end

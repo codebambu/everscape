@@ -4,24 +4,15 @@ require 'terminfo'
 
 # The display takes care of drawing the map onto the screen.
 class Display
+  attr_reader :lines, :columns
+  attr_writer :map
+
   def initialize
     @lines, @columns = TermInfo.screen_size
     @map = nil
 
     system('setterm -cursor off')
     system('stty -echo')
-  end
-
-  def lines
-    @lines
-  end
-
-  def columns
-    @columns
-  end
-
-  def map=(map)
-    @map = map
   end
 
   def draw(matrix)

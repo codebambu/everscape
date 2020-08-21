@@ -1,16 +1,10 @@
 class Floor
+  attr_reader :line, :column
+
   def initialize(line, column)
     @line = line
     @column = column
     @character = '.'
-  end
-
-  def line
-    @line
-  end
-
-  def column
-    @column
   end
 
   def to_s

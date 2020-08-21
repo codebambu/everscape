@@ -17,6 +17,7 @@ class Everscape
 
     @dungeon = Dungeon.new(@display.lines, @display.columns, cell_size, room_count)
     @dungeon.add_object(@player)
+    @player.map = @dungeon
   end
 
   def start

@@ -71,21 +71,21 @@ class Dungeon < Map
 
     @grid.each_with_index do |line, line_index|
       # check if the next tile for the line is "on the grid"
-      if line_index % lines == 0
-        line.each_with_index do |column, column_index|
-          # check if the next tile for the columns is "on the grid"
-          if column_index % columns == 0
-            # if cell is within boundry of map, create the cell
-            if line_index + lines < @lines && column_index + columns < @columns
-              cell = Cell.new(line_index, column_index, @cell_size)
-              cells << cell
-            end
-          end
+      next unless line_index % lines == 0
+
+      line.each_with_index do |_column, column_index|
+        # check if the next tile for the columns is "on the grid"
+        next unless column_index % columns == 0
+
+        # if cell is within boundry of map, create the cell
+        if line_index + lines < @lines && column_index + columns < @columns
+          cell = Cell.new(line_index, column_index, @cell_size)
+          cells << cell
         end
       end
     end
 
-    cells = cells.shuffle.last(@room_count)
+    cells = cells.sample(@room_count)
 
     @cells = cells
   end
@@ -149,11 +149,7 @@ class Dungeon < Map
       end
     end
 
-    if path_valid
-      return path
-    else
-      return nil
-    end
+    path if path_valid
   end
 
   def get_south_path(wall)
@@ -179,35 +175,27 @@ class Dungeon < Map
       end
     end
 
-    if path_valid
-      return path
-    else
-      return nil
-    end
+    path if path_valid
   end
 
   def in_horizontal_corridors_paths(line, column)
     @horizontal_corridors_paths.each do |path|
       path.each do |position|
-        if position[0] == line && position[1] == column
-          return true
-        end
+        return true if position[0] == line && position[1] == column
       end
     end
 
-    return false
+    false
   end
 
   def in_vertical_corridors_paths(line, column)
     @vertical_corridors_paths.each do |path|
       path.each do |position|
-        if position[0] == line && position[1] == column
-          return true
-        end
+        return true if position[0] == line && position[1] == column
       end
     end
 
-    return false
+    false
   end
 
   def create_horizontal_corridors_paths
@@ -221,16 +209,12 @@ class Dungeon < Map
       east_walls.each do |wall|
         path = get_east_path(wall)
 
-        if path
-          room_paths << path
-        end
+        room_paths << path if path
       end
 
       room_paths.shuffle!
 
-      if room_paths.length > 0
-        all_paths << room_paths.first
-      end
+      all_paths << room_paths.first if room_paths.length > 0
     end
 
     @horizontal_corridors_paths = all_paths
@@ -247,16 +231,12 @@ class Dungeon < Map
       south_walls.each do |wall|
         path = get_south_path(wall)
 
-        if path
-          room_paths << path
-        end
+        room_paths << path if path
       end
 
       room_paths.shuffle!
 
-      if room_paths.length > 0
-        all_paths << room_paths.first
-      end
+      all_paths << room_paths.first if room_paths.length > 0
     end
 
     @vertical_corridors_paths = all_paths
