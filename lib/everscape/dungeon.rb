@@ -1,6 +1,8 @@
 require_relative 'map'
 
 class Dungeon < Map
+  attr_reader :rooms
+
   def initialize(lines, columns, cell_size, room_count)
     super(lines, columns)
     @cell_size = cell_size

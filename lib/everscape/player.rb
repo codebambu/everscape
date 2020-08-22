@@ -24,6 +24,14 @@ class Player
     end
   end
 
+  def set_starting_position
+    room = @map.rooms.sample
+    wall1 = room.north_walls[0..room.north_walls.size - 1].sample
+    wall2 = room.west_walls[0..room.west_walls.size - 1].sample
+    @line = wall1.line + (room.west_walls.size / 2)
+    @column = wall2.column + (room.north_walls.size / 2)
+  end
+
   # commands
 
   def move_left
